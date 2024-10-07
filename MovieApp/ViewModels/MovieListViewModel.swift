@@ -6,31 +6,30 @@
 //
 
 import Foundation
+
 class MovieListViewModel: ObservableObject {
     @Published var movies: [Movie] = []
+    private let repository: MovieRepositoryProtocol
 
-    // Fetch movies using async/await
-    func fetchMovies() async {
-        guard let url = URL(string: "https://freetestapi.com/api/v1/movies?limit=20") else { return }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let movies = try JSONDecoder().decode([Movie].self, from: data)
-            DispatchQueue.main.async {
-                self.movies = movies
-            }
-        } catch {
-            print("Error fetching or decoding JSON: \(error)")
-        }
-    }
-
-    init(preview: Bool)  {
+    init(repository: MovieRepositoryProtocol = MovieRepository(), preview: Bool = false) {
+        self.repository = repository
         if preview {
-            self.movies = [Movie(), Movie(), Movie()]
+            self.movies = [Movie(), Movie(), Movie()] // Sample data for previews
         } else {
             Task {
                 await fetchMovies()
             }
+        }
+    }
+
+    func fetchMovies() async {
+        do {
+            let movies = try await repository.getMovies()
+            DispatchQueue.main.async {
+                self.movies = movies
+            }
+        } catch {
+            print("Error fetching movies: \(error)")
         }
     }
 }
