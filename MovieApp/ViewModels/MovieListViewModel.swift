@@ -9,34 +9,28 @@ import Foundation
 class MovieListViewModel: ObservableObject {
     @Published var movies: [Movie] = []
 
-    func fetchMovies() {
+    // Fetch movies using async/await
+    func fetchMovies() async {
         guard let url = URL(string: "https://freetestapi.com/api/v1/movies?limit=20") else { return }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                do {
-                    let movies = try JSONDecoder().decode([Movie].self, from: data)
-                    DispatchQueue.main.async {
-                        self.movies = movies
-                    }
-                } catch {
-                    print("Error decoding JSON: \(error)")
-                }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let movies = try JSONDecoder().decode([Movie].self, from: data)
+            DispatchQueue.main.async {
+                self.movies = movies
             }
+        } catch {
+            print("Error fetching or decoding JSON: \(error)")
         }
-        task.resume()
     }
 
-    // New initializer for preview
-    init(preview: Bool) {
+    init(preview: Bool)  {
         if preview {
-            // Simulating fetching of movies; you can customize the mock movies if needed
-            self.movies = [
-                Movie(id: 1, title: "Inception", year: 2010, genre: ["Sci-Fi", "Action"], poster: "https://example.com/inception.jpg"),
-                Movie(id: 2, title: "The Shawshank Redemption", year: 1994, genre: ["Drama"], poster: "https://example.com/shawshank.jpg"),
-                Movie(id: 3, title: "The Dark Knight", year: 2008, genre: ["Action", "Thriller"], poster: "https://example.com/darkknight.jpg")
-            ]
+            self.movies = [Movie(), Movie(), Movie()]
         } else {
-            fetchMovies() // Call the fetch function for normal use
+            Task {
+                await fetchMovies()
+            }
         }
     }
 }
