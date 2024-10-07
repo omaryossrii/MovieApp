@@ -19,7 +19,11 @@ struct MovieListView: View {
     var body: some View {
         NavigationView {
             List(viewModel.movies) { movie in
-                MovieCardView(movie: movie)
+                // Wrap MovieCardView in a NavigationLink
+                NavigationLink(destination: MovieDetailsView(movie: movie)) {
+                    MovieCardView(movie: movie)
+                }
+                .buttonStyle(PlainButtonStyle()) // Prevent default button style
             }
             .navigationTitle("Movies")
             .onAppear {
