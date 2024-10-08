@@ -27,7 +27,7 @@ class MovieListViewModel: ObservableObject {
             let movies = try await repository.getMovies()
             DispatchQueue.main.async {
                 self.movies = movies
-                print("Movies fetched successfully: \(movies)") // Add this line
+                print("Movies fetched successfully: \(movies)") 
             }
         } catch {
             print("Error fetching movies: \(error)")

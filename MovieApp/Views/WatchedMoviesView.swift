@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct WatchedMoviesView: View {
-    @ObservedObject var watchedMoviesViewModel = WatchedMoviesViewModel() // Create an instance of WatchedMoviesViewModel
-    @ObservedObject var movieListViewModel = MovieListViewModel(preview: true) // Replace with your actual view model that fetches movies
+    @ObservedObject var watchedMoviesViewModel = WatchedMoviesViewModel()
+    @ObservedObject var movieListViewModel = MovieListViewModel(preview: true)
 
     var body: some View {
         NavigationView {
@@ -15,7 +15,8 @@ struct WatchedMoviesView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
-                    ForEach(movieListViewModel.movies.filter { watchedMovieIDs.contains($0.id) }) { movie in
+                    // Loop through the watched movies objects and display MovieCardView
+                    ForEach(watchedMoviesViewModel.watchedmoviesObjecs) { movie in
                         MovieCardView(
                             movie: movie,
                             isWatched: Binding(
@@ -31,6 +32,10 @@ struct WatchedMoviesView: View {
                 }
             }
             .navigationTitle("Watched Movies")
+            .onAppear {
+                watchedMoviesViewModel.loadWatchedMovies()
+                watchedMoviesViewModel.fetchWatchedMoviesDetails() // Fetch movie details when the view appears
+            }
         }
     }
 }
