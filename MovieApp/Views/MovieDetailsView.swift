@@ -1,17 +1,3 @@
-//
-//  MovieDetailsView.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
-//
-
-//
-//  MovieDetailsView.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
-//
-
 import SwiftUI
 
 struct MovieDetailsView: View {
