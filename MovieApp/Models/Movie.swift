@@ -45,7 +45,15 @@ struct Movie: Identifiable, Decodable {
     }
 
     // Static method to create a placeholder Movie (for previews, mock data, etc.)
-    static func placeholder() -> Movie {
+    static func placeholder() -> Movie? {
+        // Safely unwrap the optional URLs using guard let
+        guard let trailerURL = URL(string: "https://example.com/defaulttrailer.mp4"),
+              let websiteURL = URL(string: "https://example.com") else {
+            // Return nil if the URLs are invalid
+            print("Error: Invalid URL for placeholder movie.")
+            return nil
+        }
+
         return Movie(
             id: 0,
             title: "Placeholder Title",
@@ -56,14 +64,14 @@ struct Movie: Identifiable, Decodable {
             actors: ["Unknown Actor"],
             plot: "No plot available",
             poster: "https://example.com/defaultposter.jpg",
-            trailer: URL(string: "https://example.com/defaulttrailer.mp4")!,
+            trailer: trailerURL,
             runtime: 120,
             awards: "No awards",
             country: "Unknown",
             language: "Unknown",
             boxOffice: "N/A",
             production: "Unknown Production",
-            website: URL(string: "https://example.com")!
+            website: websiteURL
         )
     }
 }
