@@ -31,5 +31,5 @@ struct MovieCardView: View {
 }
 
 #Preview {
-    MovieCardView(movie: Movie())
+    MovieCardView(movie: Movie.placeholder())
 }

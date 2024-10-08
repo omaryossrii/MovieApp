@@ -14,7 +14,7 @@ class MovieListViewModel: ObservableObject {
     init(repository: MovieRepositoryProtocol = MovieRepository(), preview: Bool = false) {
         self.repository = repository
         if preview {
-            self.movies = [Movie(), Movie(), Movie()] // Sample data for previews
+            self.movies = [Movie.placeholder(), Movie.placeholder(), Movie.placeholder()] // Sample data for previews
         } else {
             Task {
                 await fetchMovies()

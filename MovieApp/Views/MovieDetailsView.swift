@@ -70,5 +70,5 @@ struct MovieDetailsView: View {
 }
 
 #Preview {
-    MovieDetailsView(movie: Movie())
+    MovieDetailsView(movie: Movie.placeholder())
 }

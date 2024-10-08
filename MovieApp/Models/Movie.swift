@@ -1,12 +1,4 @@
-//
-//  Movie.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
-//
-
 import Foundation
-import SwiftUI
 
 // Movie struct to hold the movie details
 struct Movie: Identifiable, Decodable {
@@ -28,24 +20,11 @@ struct Movie: Identifiable, Decodable {
     let production: String
     let website: URL
 
-    // Initializer with default values
-    init(id: Int = 0,
-         title: String = "Untitled",
-         year: Int = 2000,
-         genre: [String] = ["Genre"],
-         rating: Double = 0.0,
-         director: String = "Unknown Director",
-         actors: [String] = ["Unknown Actor"],
-         plot: String = "No plot available",
-         poster: String = "https://example.com/defaultposter.jpg",
-         trailer: URL = URL(string: "https://example.com/defaulttrailer.mp4")!,
-         runtime: Int = 120,
-         awards: String = "No awards",
-         country: String = "Unknown",
-         language: String = "Unknown",
-         boxOffice: String = "N/A",
-         production: String = "Unknown Production",
-         website: URL = URL(string: "https://example.com")!) {
+    // Custom initializer with no default values
+    init(id: Int, title: String, year: Int, genre: [String], rating: Double,
+         director: String, actors: [String], plot: String, poster: String,
+         trailer: URL, runtime: Int, awards: String, country: String,
+         language: String, boxOffice: String, production: String, website: URL) {
         self.id = id
         self.title = title
         self.year = year
@@ -63,5 +42,28 @@ struct Movie: Identifiable, Decodable {
         self.boxOffice = boxOffice
         self.production = production
         self.website = website
+    }
+
+    // Static method to create a placeholder Movie (for previews, mock data, etc.)
+    static func placeholder() -> Movie {
+        return Movie(
+            id: 0,
+            title: "Placeholder Title",
+            year: 2000,
+            genre: ["Genre"],
+            rating: 0.0,
+            director: "Unknown Director",
+            actors: ["Unknown Actor"],
+            plot: "No plot available",
+            poster: "https://example.com/defaultposter.jpg",
+            trailer: URL(string: "https://example.com/defaulttrailer.mp4")!,
+            runtime: 120,
+            awards: "No awards",
+            country: "Unknown",
+            language: "Unknown",
+            boxOffice: "N/A",
+            production: "Unknown Production",
+            website: URL(string: "https://example.com")!
+        )
     }
 }
