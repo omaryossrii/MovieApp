@@ -1,14 +1,8 @@
-//
-//  MovieCardView.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
-//
-
 import SwiftUI
 
 struct MovieCardView: View {
     let movie: Movie
+    @Binding var isWatched: Bool  // Binding to track watched state
 
     var body: some View {
         HStack {
@@ -26,10 +20,38 @@ struct MovieCardView: View {
                 Text(movie.year.description)
                 Text(movie.genre.joined(separator: ", "))
             }
+            Spacer()
+            // Eye icon to indicate watched state
+            Button(action: {
+                isWatched.toggle()
+            }) {
+                Image(systemName: isWatched ? "eye.fill" : "eye.slash.fill") // Use eye symbol
+                    .foregroundColor(isWatched ? .green : .gray)
+                    .font(.system(size: 30)) // Increase size of the icon
+            }
+            .buttonStyle(PlainButtonStyle())  // Disable default button styling
         }
+        .padding() // Optional: Add padding to the card
+    }
+}
+
+// Helper to create a preview with a stateful binding
+struct StatefulPreviewWrapper<T: View>: View {
+    @State private var value: Bool
+    private var content: (Binding<Bool>) -> T
+    
+    init(_ initialValue: Bool, @ViewBuilder content: @escaping (Binding<Bool>) -> T) {
+        _value = State(initialValue: initialValue)
+        self.content = content
+    }
+    
+    var body: some View {
+        content($value)
     }
 }
 
 #Preview {
-    MovieDetailsView(movie: Movie.placeholder())
+    StatefulPreviewWrapper(false) { isWatched in
+        MovieCardView(movie: Movie.placeholder(), isWatched: isWatched)
+    }
 }

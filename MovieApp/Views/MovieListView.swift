@@ -1,22 +1,23 @@
-//
-//  MovieListView.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
-//
-
 import SwiftUI
 
 struct MovieListView: View {
     @ObservedObject var viewModel: MovieListViewModel
+    @ObservedObject var watchedMoviesViewModel = WatchedMoviesViewModel() // Create an instance of WatchedMoviesViewModel
 
     var body: some View {
         NavigationView {
             List(viewModel.movies) { movie in
-                NavigationLink(destination: MovieDetailsView(movie: movie)) {
-                    MovieCardView(movie: movie)
-                }
-                .buttonStyle(PlainButtonStyle())
+                MovieCardView(
+                    movie: movie,
+                    isWatched: Binding(
+                        get: {
+                            watchedMoviesViewModel.isWatched(movieID: movie.id) // Check if watched
+                        },
+                        set: { newValue in
+                            watchedMoviesViewModel.toggleWatched(movieID: movie.id) // Update watched state
+                        }
+                    )
+                )
             }
             .navigationTitle("Movies")
             .onAppear {
