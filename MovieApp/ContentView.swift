@@ -1,21 +1,26 @@
+// ContentView.swift
+// MovieApp
 //
-//  ContentView.swift
-//  MovieApp
-//
-//  Created by Omar Yossri on 07/10/2024.
+// Created by Omar Yossri on 07/10/2024.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var movieListViewModel = MovieListViewModel(preview: false)
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            MovieListView(viewModel: movieListViewModel)
+                .tabItem {
+                    Label("Movies", systemImage: "film")
+                }
+            
+            WatchedMoviesView()
+                .tabItem {
+                    Label("Watched", systemImage: "checkmark.square")
+                }
         }
-        .padding()
     }
 }
 
